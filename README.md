@@ -1,4 +1,5 @@
 # 🇦🇺 Australian Market Intelligence
+![Homepage](Assets/Screenshot/homepage.png)
 
 > A production-grade AI-powered market intelligence platform that continuously monitors Australian business news, extracts entities, scores relevance, and surfaces investment-grade insights across Technology, Energy, Retail, Property, and Policy sectors.
 
@@ -64,6 +65,8 @@ The system runs an automated 8-step pipeline every hour, fetches articles from c
 
 ## Architecture
 
+![Architecture](Assets/Screenshot/australian_market_intelligence_architecture.png)
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    AUTOMATED PIPELINE                       │
@@ -95,6 +98,20 @@ The system runs an automated 8-step pipeline every hour, fetches articles from c
 ```
 
 ---
+
+## 📸 Screenshots
+
+### Homepage
+
+![Homepage](Assets/Screenshot/homepage.png)
+
+### Intelligence Dashboard
+
+![Dashboard](Assets/Screenshot/dashboard.png)
+
+### Article Intelligence
+
+![Article](Assets/Screenshot/article1.png)
 
 ## Setup
 
