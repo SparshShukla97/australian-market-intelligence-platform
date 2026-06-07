@@ -12,6 +12,20 @@ Australian Market Intelligence is a full-stack data platform that transforms raw
 The system runs an automated 8-step pipeline every hour, fetches articles from curated Australian news sources, applies NLP and GPT-4 enrichment, and serves the results through a premium glassmorphism web interface with live stock prices.
 
 ---
+## 📊 Project Highlights
+
+- 220+ enriched business articles processed and stored in MongoDB
+- 5 Australian business sectors monitored (Technology, Energy, Retail, Property, Policy & Economy)
+- 8-step automated intelligence pipeline from ingestion to enrichment
+- Hybrid NER architecture using spaCy + GLiNER for entity extraction
+- GPT-4o-mini powered insights including summaries, key insights, and "Why It Matters" analysis
+- Real-time company enrichment with logos, stock symbols, and market context
+- FastAPI backend serving intelligence and stock market data
+- Interactive React dashboard with search, filtering, sentiment scoring, and stock visualization
+- Automated hourly processing via scheduler-based pipeline execution
+- MongoDB intelligence repository supporting incremental article updates and deduplication
+
+---
 
 ## Features
 
