@@ -65,3 +65,4 @@ htmlcov/
 
 # ── Claude / AI session files ────────────────────────────
 .claude/
+*.mp4
