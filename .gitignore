@@ -1,0 +1,67 @@
+# ── Python ────────────────────────────────────────────────
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.so
+
+# ── Environment / secrets ─────────────────────────────────
+.env
+*.env.local
+
+# ── Logs ─────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Output / data ─────────────────────────────────────────
+output/
+src/output/
+data/
+
+# ── Screenshots / media ───────────────────────────────────
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.mov
+
+# Allow portfolio assets
+!Assets/
+!Assets/Screenshot/
+!Assets/Screenshot/*.png
+!Assets/Screenshot/*.jpg
+!Assets/Screenshot/*.jpeg
+!Assets/videos/
+!Assets/videos/*.mp4
+
+idea_UI.png
+image.png
+
+# ── macOS ─────────────────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# ── IDEs ─────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Node (if frontend ever migrates) ─────────────────────
+node_modules/
+.next/
+dist/
+
+# ── Test artefacts ────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Claude / AI session files ────────────────────────────
+.claude/

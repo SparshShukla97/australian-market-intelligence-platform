@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//private/tmp/**)",
+      "Bash(mkdir -p fronend_ui)",
+      "Bash(unzip -o \"/Users/sparshshukla/Downloads/fronend ui.zip\" -d /tmp/fronend_ui)",
+      "Read(//tmp/**)"
+    ]
+  }
+}

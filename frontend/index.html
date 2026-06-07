@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sparsh Intelligence — Australian Market Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;450;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','sans-serif'], serif: ['"Instrument Serif"','serif'] } } } };</script>
+<style>
+  html { scroll-behavior: smooth; }
+  html, body { margin:0; padding:0; background:#07080a; color:#fff; font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased; }
+
+  .liquid-glass {
+    background: rgba(10,12,16,0.38);
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), inset 0 -1px 0 rgba(255,255,255,0.04), 0 8px 30px rgba(0,0,0,0.25);
+    position: relative; overflow: hidden;
+  }
+  .liquid-glass::before {
+    content:''; position:absolute; inset:0; border-radius:inherit; padding:1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 25%, rgba(255,255,255,0.00) 55%, rgba(255,255,255,0.06) 85%, rgba(255,255,255,0.22) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude; pointer-events:none;
+  }
+  .glass-soft { background:rgba(255,255,255,0.06); backdrop-filter:blur(18px) saturate(140%); -webkit-backdrop-filter:blur(18px) saturate(140%); border:1px solid rgba(255,255,255,0.12); }
+
+  .search-shell {
+    background: rgba(12,14,18,0.42); backdrop-filter:blur(28px) saturate(150%); -webkit-backdrop-filter:blur(28px) saturate(150%);
+    border:1px solid rgba(255,255,255,0.10); box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 30px 80px -20px rgba(0,0,0,0.55);
+    transition: border-color 400ms ease, box-shadow 400ms ease;
+  }
+  .search-input { background:transparent; outline:none; border:0; color:#fff; width:100%; font-size:17px; letter-spacing:-0.005em; }
+  .search-input::placeholder { color:rgba(255,255,255,0.55); font-weight:400; }
+
+  .send-btn { background:#fff; color:#0a0a0a; transition:transform 200ms ease, background 200ms ease; }
+  .send-btn:hover { transform:translateY(-1px); background:#f3f3f3; }
+
+  .pill {
+    background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:rgba(255,255,255,0.92);
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    transition: background 220ms ease, border-color 220ms ease, transform 220ms ease;
+  }
+  .pill:hover, .pill.active { background:rgba(255,255,255,0.13); border-color:rgba(255,255,255,0.28); transform:translateY(-1px); }
+
+  .pill-enter { opacity:0; transform:translateY(8px) scale(0.96); }
+  .pills-show .pill-enter { animation: pillIn 520ms cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes pillIn { to { opacity:1; transform:translateY(0) scale(1); } }
+
+  .insight-card { transition:transform 400ms cubic-bezier(.2,.7,.2,1); }
+  .insight-card:hover { transform:translateY(-3px); }
+
+  .vignette {
+    background: radial-gradient(140% 90% at 50% 0%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.18) 65%, rgba(0,0,0,0.32) 100%),
+                linear-gradient(180deg, rgba(7,8,10,0.32) 0%, rgba(7,8,10,0.08) 22%, rgba(7,8,10,0.00) 50%, rgba(7,8,10,0.10) 100%);
+  }
+  .nav-scrim { background: linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.0) 100%); }
+
+  .eyebrow { letter-spacing:0.22em; text-transform:uppercase; font-size:11px; color:rgba(255,255,255,0.65); font-weight:500; }
+
+  .article-card {
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    transition: background 300ms ease, border-color 300ms ease, transform 300ms cubic-bezier(.2,.7,.2,1), box-shadow 300ms ease;
+    cursor:pointer;
+  }
+  .article-card:hover { background:rgba(255,255,255,0.07); transform:translateY(-3px); }
+
+  /* Category count badge on pills */
+  .pill-count {
+    font-size: 10px; font-weight: 500;
+    background: rgba(255,255,255,0.10);
+    border-radius: 99px; padding: 1px 6px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0;
+  }
+
+  /* Stat card count-up number */
+  @keyframes statPop {
+    0%   { transform: scale(0.85); opacity: 0; }
+    60%  { transform: scale(1.06); }
+    100% { transform: scale(1);    opacity: 1; }
+  }
+  .stat-number { animation: statPop 500ms cubic-bezier(.2,.7,.2,1) both; }
+
+  .stat-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px); }
+
+  /* Scroll reveal */
+  .reveal { opacity:0; transform:translateY(28px); transition: opacity 700ms cubic-bezier(.2,.7,.2,1), transform 700ms cubic-bezier(.2,.7,.2,1); }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* Sentiment */
+  .badge-positive { background:rgba(52,211,153,0.15); border:1px solid rgba(52,211,153,0.25); color:#34d399; }
+  .badge-negative { background:rgba(248,113,113,0.15); border:1px solid rgba(248,113,113,0.25); color:#f87171; }
+  .badge-neutral  { background:rgba(148,163,184,0.15); border:1px solid rgba(148,163,184,0.25); color:#94a3b8; }
+
+  /* Dots */
+  .dot-tech     { background:#60a5fa; }
+  .dot-funding  { background:#34d399; }
+  .dot-policy   { background:#fb923c; }
+  .dot-energy   { background:#fbbf24; }
+  .dot-retail   { background:#f472b6; }
+  .dot-property { background:#a78bfa; }
+
+  /* Stars */
+  .star-filled { color:#fbbf24; }
+  .star-empty  { color:rgba(255,255,255,0.2); }
+
+  /* ── Modal backdrop ── */
+  .modal-backdrop {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(2,3,8,0.82);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px 16px;
+    animation: fadeInBackdrop 260ms ease forwards;
+    overflow: hidden;
+  }
+  @keyframes fadeInBackdrop { from { opacity:0; } to { opacity:1; } }
+
+  /* Blurred background video inside backdrop */
+  .modal-bg-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover;
+    opacity: 0.18; filter: blur(28px) brightness(0.6) saturate(1.3);
+    pointer-events: none;
+  }
+  .modal-bg-overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 120% 100% at 50% 50%, rgba(2,3,8,0.45) 0%, rgba(2,3,8,0.82) 100%);
+    pointer-events: none;
+  }
+
+  /* Wrapper: [← btn] [modal] [→ btn] */
+  .modal-outer {
+    display: flex; align-items: center; gap: 20px;
+    width: 100%; max-width: 1080px;
+    position: relative; z-index: 2;
+  }
+
+  /* Floating nav buttons */
+  .modal-nav-float {
+    width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.14);
+    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+    color: rgba(255,255,255,0.75); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease, color 220ms ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .modal-nav-float:hover:not(:disabled) {
+    background: rgba(255,255,255,0.14);
+    border-color: rgba(255,255,255,0.28);
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.4);
+    color: #fff;
+  }
+  .modal-nav-float:disabled { opacity:0.18; cursor:default; }
+
+  /* Modal card */
+  .modal-box {
+    background: rgba(7,9,14,0.96);
+    border: 1px solid rgba(255,255,255,0.09);
+    backdrop-filter: blur(48px) saturate(180%); -webkit-backdrop-filter: blur(48px) saturate(180%);
+    border-radius: 22px;
+    width: 100%; max-width: 860px;
+    max-height: 88vh;
+    overflow-y: auto; overflow-x: hidden;
+    animation: slideUpModal 340ms cubic-bezier(.2,.7,.2,1) forwards;
+    box-shadow: 0 50px 130px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.07);
+    position: relative;
+  }
+  @keyframes slideUpModal {
+    from { opacity:0; transform:translateY(32px) scale(0.96); }
+    to   { opacity:1; transform:translateY(0)    scale(1); }
+  }
+
+  /* Company hero strip */
+  .modal-hero {
+    display: flex; overflow: hidden;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    min-height: 130px;
+  }
+  .modal-hero-left {
+    flex: 1; padding: 22px 24px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-width: 0;
+  }
+  .modal-hero-right {
+    width: 200px; flex-shrink: 0; position: relative; overflow: hidden;
+  }
+
+  /* Stock overview card */
+  .stock-overview {
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.03);
+    padding: 12px 14px;
+  }
+
+  /* Section row label (with icon) */
+  .section-label {
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 8px;
+  }
+  .section-label span {
+    font-size: 9.5px; letter-spacing: 0.20em; text-transform: uppercase;
+    font-weight: 500; color: rgba(255,255,255,0.45);
+  }
+
+  /* ══════════════════════════════════════════
+     DASHBOARD BACKGROUND
+  ══════════════════════════════════════════ */
+  .dashboard-section {
+    position: relative;
+    background: #030407;
+    overflow: hidden;
+  }
+  .dashboard-video {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 1;
+    filter: saturate(1.15) brightness(1.1);
+    transition: filter 800ms ease, opacity 800ms ease;
+  }
+  /* Dark mode overlay — completely removed so video is fully visible */
+  .dashboard-video-overlay {
+    position: absolute; inset: 0;
+    background: transparent;
+    pointer-events: none;
+    transition: background 800ms ease;
+  }
+  /* Light mode: tone down the brightness so panels stay readable */
+  .dashboard-video-overlay.light {
+    background: rgba(15, 20, 40, 0.35);
+  }
+  /* Light mode video: slightly dimmer so it doesn't blow out */
+  .dashboard-section.light .dashboard-video {
+    filter: saturate(1.1) brightness(0.85);
+  }
+  /* Light mode intel panel — darker tint so it contrasts the bright video */
+  .intel-panel.light {
+    background: rgba(10, 12, 25, 0.55);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.06),
+      0 30px 60px rgba(0,0,0,0.35),
+      0 80px 160px rgba(0,0,0,0.28),
+      inset 0 1px 0 rgba(255,255,255,0.14),
+      inset 0 -1px 0 rgba(255,255,255,0.04);
+  }
+  /* Theme toggle button */
+  .theme-toggle {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.75);
+    cursor: pointer;
+    transition: background 220ms ease, border-color 220ms ease, color 220ms ease, transform 220ms ease;
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.22); color:#fff; transform: rotate(18deg); }
+
+  /* Animated ambient orbs */
+  .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(110px);
+    display: none;
+  }
+  @keyframes orbDrift1 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    25%      { transform: translate(48px,-36px) scale(1.06); }
+    50%      { transform: translate(20px, 28px) scale(0.96); }
+    75%      { transform: translate(-32px,-16px) scale(1.03); }
+  }
+  @keyframes orbDrift2 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%      { transform: translate(-55px, 40px) scale(0.94); }
+    66%      { transform: translate(35px,-50px) scale(1.08); }
+  }
+  @keyframes orbDrift3 {
+    0%,100% { transform: translate(0,0) scale(1); opacity:0.5; }
+    50%      { transform: translate(25px,-35px) scale(1.1); opacity:0.8; }
+  }
+
+  /* Subtle grid texture overlay */
+  .dashboard-grid-texture {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+
+  /* ══════════════════════════════════════════
+     INTEL PANEL — cinematic glass console
+  ══════════════════════════════════════════ */
+  .intel-panel {
+    background: rgba(8, 10, 17, 0.35);
+    backdrop-filter: blur(24px) saturate(160%) brightness(1.0);
+    -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.0);
+    border-radius: 28px;
+    border: 1px solid rgba(255,255,255,0.065);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.03),
+      0 30px 60px rgba(0,0,0,0.5),
+      0 80px 160px rgba(0,0,0,0.45),
+      inset 0 1px 0 rgba(255,255,255,0.11),
+      inset 0 -1px 0 rgba(255,255,255,0.025);
+  }
+
+  /* Top shimmer line — slow animated reflection */
+  @keyframes shimmerLine {
+    0%   { opacity: 0.4; background-position: -200% 0; }
+    50%  { opacity: 1;   background-position: 200% 0; }
+    100% { opacity: 0.4; background-position: 200% 0; }
+  }
+  .intel-panel-shimmer {
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255,255,255,0.08) 15%,
+      rgba(255,255,255,0.45) 50%,
+      rgba(255,255,255,0.08) 85%,
+      transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmerLine 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Inner ambient top glow */
+  .intel-panel-glow {
+    position: absolute; top: -60px; left: 10%; right: 10%; height: 200px;
+    background: radial-gradient(ellipse 80% 100% at 50% 0%,
+      rgba(96,165,250,0.055) 0%, transparent 75%);
+    pointer-events: none;
+  }
+
+  /* Panel header accent line */
+  .panel-header-bar {
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255,255,255,0.06) 20%,
+      rgba(255,255,255,0.12) 50%,
+      rgba(255,255,255,0.06) 80%,
+      transparent 100%);
+    margin-bottom: 28px;
+  }
+
+  /* ══════════════════════════════════════════
+     HORIZONTAL SLIDE TRACK
+  ══════════════════════════════════════════ */
+  .slide-viewport {
+    overflow: hidden;
+    border-radius: 12px;
+  }
+  .slide-track {
+    display: flex;
+    will-change: transform;
+    transition: transform 580ms cubic-bezier(0.32, 0.72, 0, 1);
+  }
+  .slide-page-item {
+    width: 100%;
+    flex-shrink: 0;
+  }
+
+  /* ══════════════════════════════════════════
+     PAGINATION
+  ══════════════════════════════════════════ */
+  .page-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 14px; font-size: 13px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.09);
+    color: rgba(255,255,255,0.65);
+    transition: background 220ms ease, border-color 220ms ease, color 220ms ease, transform 180ms ease;
+    cursor: pointer;
+  }
+  .page-btn:hover:not(:disabled) {
+    background: rgba(255,255,255,0.10);
+    border-color: rgba(255,255,255,0.20);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  .page-btn:active:not(:disabled) { transform: translateY(0); }
+  .page-btn:disabled { opacity: 0.18; cursor: default; }
+
+  .page-dot {
+    height: 3px; border-radius: 99px;
+    background: rgba(255,255,255,0.18);
+    transition: background 350ms ease, width 350ms cubic-bezier(0.32,0.72,0,1);
+    cursor: pointer; border: none; padding: 0;
+  }
+  .page-dot:not(.active) { width: 4px; }
+  .page-dot.active { width: 22px; background: rgba(255,255,255,0.85); }
+  .page-dot:hover:not(.active) { background: rgba(255,255,255,0.38); }
+
+  /* ── Sticky navbar ── */
+  .sticky-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+    padding: 10px 24px;
+    transition: opacity 400ms cubic-bezier(.2,.7,.2,1), transform 400ms cubic-bezier(.2,.7,.2,1);
+  }
+  .sticky-nav.hidden { opacity: 0; transform: translateY(-110%); pointer-events: none; }
+
+  /* ── Back-to-top ── */
+  .back-top {
+    position: fixed; bottom: 28px; right: 28px; z-index: 60;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.13);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    color: rgba(255,255,255,0.7); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 250ms ease, opacity 350ms ease, transform 350ms ease;
+  }
+  .back-top:hover { background: rgba(255,255,255,0.13); color:#fff; transform:translateY(-2px); }
+  .back-top.hidden { opacity:0; transform:translateY(12px); pointer-events:none; }
+
+  /* ── Search active state ── */
+  .search-active-bar {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px; padding: 7px 14px;
+    font-size: 12px; color: rgba(255,255,255,0.55);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* ── Modal nav buttons ── */
+  .modal-nav-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 38px; height: 38px; border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    color: rgba(255,255,255,0.7); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 200ms ease; z-index: 10;
+  }
+  .modal-nav-btn:hover { background: rgba(255,255,255,0.14); color:#fff; }
+  .modal-nav-btn:disabled { opacity:0.15; cursor:default; }
+  .modal-nav-btn.prev { left: -52px; }
+  .modal-nav-btn.next { right: -52px; }
+
+  @keyframes spin       { to { transform: rotate(360deg); } }
+  @keyframes bounce     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(4px)} }
+  @keyframes livePulse  { 0%,100%{box-shadow:0 0 0 0 rgba(52,211,153,0.5)} 50%{box-shadow:0 0 0 6px rgba(52,211,153,0)} }
+
+  ::selection { background:rgba(255,255,255,0.18); }
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.10); border-radius:99px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+/* ── FadeIn ── */
+function FadeIn({ delay=0, duration=900, y=0, children, className='', style={} }) {
+  const [v, setV] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setV(true), delay); return () => clearTimeout(t); }, [delay]);
+  return <div className={className} style={{ opacity:v?1:0, transform:v?'translateY(0)':`translateY(${y}px)`, transition:`opacity ${duration}ms cubic-bezier(.2,.7,.2,1), transform ${duration}ms cubic-bezier(.2,.7,.2,1)`, ...style }}>{children}</div>;
+}
+
+/* ── Animated heading ── */
+function AnimatedHeading({ text, initialDelay=200, charDelay=20, className='', style={} }) {
+  const [a, setA] = useState(false);
+  useEffect(() => { const t = setTimeout(() => setA(true), initialDelay); return () => clearTimeout(t); }, [initialDelay]);
+  return (
+    <h1 className={className} style={style}>
+      {text.split('\n').map((line, li) => (
+        <span key={li} style={{ display:'block' }}>
+          {Array.from(line).map((ch, ci) => (
+            <span key={ci} style={{ display:'inline-block', opacity:a?1:0, transform:a?'translateY(0)':'translateY(14px)', transition:`opacity 700ms cubic-bezier(.2,.7,.2,1) ${(li*line.length*charDelay)+(ci*charDelay)}ms, transform 700ms cubic-bezier(.2,.7,.2,1) ${(li*line.length*charDelay)+(ci*charDelay)}ms`, whiteSpace:'pre' }}>{ch===' '?' ':ch}</span>
+          ))}
+        </span>
+      ))}
+    </h1>
+  );
+}
+
+/* ── Scroll reveal hook ── */
+function useReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { el.classList.add('visible'); obs.disconnect(); } }, { threshold:0.08 });
+    obs.observe(el); return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+/* ── Count-up hook: animates a number from 0 to target when visible ── */
+function useCountUp(target, duration = 1000) {
+  const [display, setDisplay] = useState('0');
+  const [triggered, setTriggered] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setTriggered(true); obs.disconnect(); }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!triggered) return;
+    const isFloat = String(target).includes('.');
+    const num = parseFloat(target);
+    if (!num) { setDisplay(String(target)); return; }
+    const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = num * eased;
+      setDisplay(p < 1
+        ? (isFloat ? val.toFixed(1) : Math.floor(val).toString())
+        : String(target));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [triggered, target, duration]);
+
+  return { ref, display };
+}
+
+/* ── Scroll position hook ── */
+function useScrolled(threshold = 90) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > threshold);
+    window.addEventListener('scroll', fn, { passive: true });
+    fn();
+    return () => window.removeEventListener('scroll', fn);
+  }, [threshold]);
+  return scrolled;
+}
+
+/* ── Sticky navbar (appears after scrolling past hero) ── */
+function StickyNav({ theme, onToggleTheme, visible }) {
+  return (
+    <div className={`sticky-nav${visible ? '' : ' hidden'}`}>
+      <nav className="liquid-glass rounded-2xl px-4 sm:px-5 py-2.5 flex items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center gap-3">
+          <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background:'linear-gradient(140deg,#ffffff,#cfd2d6)' }}>
+            <span className="text-[11px] font-semibold text-black">S</span>
+          </div>
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-[14px] font-medium text-white">Sparsh</span>
+            <span className="text-[14px] font-light text-white/70">AI</span>
+            <span className="hidden md:inline ml-1.5 text-[9px] tracking-[0.22em] uppercase text-white/35">Market Intelligence</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2.5">
+          <a href="#dashboard" className="hidden sm:inline text-[11.5px] text-white/45 hover:text-white/80 transition-colors" style={{letterSpacing:'0.04em'}}>Intelligence Feed</a>
+          <button className="theme-toggle" onClick={onToggleTheme} aria-label="Toggle theme">
+            {theme === 'dark' ? <Icon.Sun className="w-[14px] h-[14px]" /> : <Icon.Moon className="w-[14px] h-[14px]" />}
+          </button>
+          <button className="w-8 h-8 rounded-full flex items-center justify-center glass-soft hover:bg-white/10 transition-colors" aria-label="Account">
+            <Icon.User className="w-3.5 h-3.5 text-white/80" />
+          </button>
+        </div>
+      </nav>
+    </div>
+  );
+}
+
+/* ── Responsive per-page hook ── */
+function usePerPage() {
+  const [perPage, setPerPage] = useState(8);
+  useEffect(() => {
+    const update = () => {
+      if (window.innerWidth < 640)       setPerPage(4);
+      else if (window.innerWidth < 1024) setPerPage(6);
+      else                               setPerPage(8);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return perPage;
+}
+
+/* ── Icons ── */
+const Icon = {
+  Search:      p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>,
+  ArrowRight:  p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M5 12h14"/><path d="M13 5l7 7-7 7"/></svg>,
+  ArrowUpRight:p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>,
+  Sparkle:     p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg>,
+  User:        p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>,
+  X:           p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M18 6 6 18M6 6l12 12"/></svg>,
+  Building:    p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h1M9 13h1M9 17h1M14 9h1M14 13h1M14 17h1"/></svg>,
+  MapPin:      p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12 21C12 21 5 14.5 5 9a7 7 0 1 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>,
+  DollarSign:  p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+  Tag:         p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>,
+  Lightbulb:   p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.5-1 4.5-3 6l-1 2H9l-1-2c-2-1.5-3-3.5-3-6a7 7 0 0 1 7-7z"/></svg>,
+  Tech:        p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><rect x="4" y="5" width="16" height="12" rx="2"/><path d="M8 21h8M12 17v4"/></svg>,
+  Funding:     p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 18V9M10 18V5M16 18v-7M22 18H2"/></svg>,
+  Energy:      p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M13 3 5 14h6l-1 7 8-11h-6z"/></svg>,
+  Retail:      p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 7h16l-1.5 11a2 2 0 0 1-2 1.7H7.5a2 2 0 0 1-2-1.7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>,
+  Property:    p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>,
+  Policy:      p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 21V6l8-3 8 3v15"/><path d="M9 21v-7h6v7"/><path d="M4 12h16"/></svg>,
+  Globe:       p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>,
+  TrendUp:     p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></svg>,
+  Newspaper:   p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 4h16v16H4zM4 9h16M9 4v16"/></svg>,
+  ExternalLink:p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>,
+  Star:        ({ filled, ...p }) => <svg viewBox="0 0 24 24" fill={filled?'currentColor':'none'} stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" {...p}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+  Sun:         p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>,
+  Moon:        p => <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
+};
+
+/* ── Articles are fetched from the API — see App component ── */
+const ARTICLES_PLACEHOLDER = [
+  { id:1, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'2d ago',
+    title:"OpenAI's latest AI models, Codex now available on Amazon Bedrock",
+    summary:"OpenAI has launched its latest AI models, including Codex, on Amazon Web Services, marking a significant expansion in cloud AI services.",
+    company:'Amazon Bedrock', sector:'Cloud / AI', eventType:'Expansion',
+    investmentAmount:'US$100 billion (AWS commitment)', location:'San Francisco / Global',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The partnership between OpenAI and Amazon signifies a strategic shift in the AI landscape, enabling enterprise customers to access frontier models directly within AWS.",
+    whyItMatters:"For Amazon, fully hosting OpenAI products expands beyond its reliance on Anthropic. AWS AI services already generate US$15B+ annualised revenue.",
+    tags:['AI','Cloud','AWS','OpenAI'], url:'https://www.itnews.com.au' },
+
+  { id:2, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'Startup Daily', timeAgo:'3d ago',
+    title:"How the future of AI is at stake in the legal fight between Elon Musk and OpenAI",
+    summary:"Elon Musk has initiated a lawsuit against OpenAI and its leaders, claiming breach of contract and unfair business practices as OpenAI transitions to a for-profit model.",
+    company:'OpenAI', sector:'AI / Legal', eventType:'Regulation / Legal',
+    investmentAmount:'US$130 billion (damages claimed)', location:'California, United States',
+    sentiment:'negative', relevanceScore:5,
+    keyInsight:"The outcome of this lawsuit could redefine the legal framework surrounding AI companies that originally operated as charities.",
+    whyItMatters:"This case has implications for Anthropic and other mission-driven AI peers. It crystallises a wider anxiety: an incredibly powerful technology controlled by a tiny number of feuding tech executives.",
+    tags:['OpenAI','Legal','AI Governance','Regulation'], url:'https://www.startupdaily.net' },
+
+  { id:3, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'3d ago',
+    title:"Australia to charge Big Tech companies 2.25% levy unless they strike local news deals",
+    summary:"The Australian government plans to impose a 2.25% levy on Meta, Google, and TikTok unless they negotiate deals to pay local media outlets for news content.",
+    company:'Meta / Google / TikTok', sector:'Media / Regulation', eventType:'Policy / Economy',
+    investmentAmount:'N/A', location:'Australia',
+    sentiment:'neutral', relevanceScore:5,
+    keyInsight:"The proposed levy reflects growing tensions between governments and big tech over the funding of local journalism in the digital age.",
+    whyItMatters:"This regulation could significantly impact the revenue models of major tech companies while providing a lifeline to struggling Australian news organisations.",
+    tags:['Policy','Big Tech','Media','Regulation'], url:'https://www.itnews.com.au' },
+
+  { id:4, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'InnovationAus', timeAgo:'3d ago',
+    title:"Australia is defunding its space agency at exactly the wrong time",
+    summary:"The Australian Space Agency is facing a significant funding cut of 70% over two years, jeopardising Australia's position in the rapidly growing global space economy.",
+    company:'Australian Space Agency', sector:'Space / Government', eventType:'Funding',
+    investmentAmount:'$4.6B–$6.7B (global market)', location:'Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"Diminishing funding for the Australian Space Agency could undermine the country's position in the $6.7B space economy at a critical growth moment.",
+    whyItMatters:"Sustained investment in the space sector is crucial for Australia to maintain competitive edge in satellite technology, remote sensing, and global positioning.",
+    tags:['Space','Government Funding','Policy','Innovation'], url:'https://www.innovationaus.com' },
+
+  { id:5, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'3d ago',
+    title:"Intelligence × Trust: the equation that will decide Australia's AI winners",
+    summary:"Microsoft announced a significant A$25 billion investment in Australia during the Microsoft AI Tour, emphasising that trust is as critical as technological capability.",
+    company:'Microsoft', sector:'AI / Enterprise', eventType:'Expansion',
+    investmentAmount:'A$25 billion', location:'Sydney, Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The success of AI initiatives in Australia hinges on building trust alongside technological capabilities — organisations that prioritise both will lead.",
+    whyItMatters:"Microsoft's $25B commitment positions Australia as a key AI hub in the Asia-Pacific, creating significant downstream opportunities for local tech firms.",
+    tags:['Microsoft','AI','Investment','Enterprise'], url:'https://www.itnews.com.au' },
+
+  { id:6, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'InnovationAus', timeAgo:'4d ago',
+    title:"Deep tech deal surge in 2026 as NRF gets rolling",
+    summary:"The first quarter of 2026 has seen a significant surge in funding for Australian deep tech startups, with at least $1.8 billion raised through venture deals and accelerator rounds.",
+    company:'NRF / Multiple Startups', sector:'Deep Tech / VC', eventType:'Funding',
+    investmentAmount:'$1.8 billion (Q1 2026)', location:'Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"At least $1.8B was raised through various venture deals in Q1 2026, indicating growing investor confidence in Australian deep tech.",
+    whyItMatters:"This funding surge highlights the maturing Australian startup ecosystem and the National Reconstruction Fund's catalytic role in de-risking deep tech investment.",
+    tags:['Deep Tech','Venture Capital','NRF','Startups'], url:'https://www.innovationaus.com' },
+
+  { id:7, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'Startup Daily', timeAgo:'4d ago',
+    title:"The Startup World Cup is your chance to pitch in Silicon Valley and win $1.4M",
+    summary:"The Startup World Cup offers Australian founders a platform to pitch in Silicon Valley, with the chance to win $1.4M in investment from Pegasus Tech Ventures.",
+    company:'Pegasus Tech Ventures', sector:'Startup / VC', eventType:'Funding',
+    investmentAmount:'$1.4 million', location:'Melbourne, Sydney, Brisbane, Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The Startup World Cup serves as a vital opportunity for Australian startups to gain exposure and funding from leading Silicon Valley investors.",
+    whyItMatters:"This initiative fosters innovation in the startup ecosystem, providing founders with the capital and network needed to scale internationally.",
+    tags:['Startups','Competition','Silicon Valley','Funding'], url:'https://www.startupdaily.net' },
+
+  { id:8, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'4d ago',
+    title:"ABA says big tech tax gap putting payments at risk",
+    summary:"The Australian Banking Association has raised concerns about tax and regulatory disparities between banks and tech giants, warning it puts payment infrastructure at risk.",
+    company:'Australian Banking Association', sector:'Banking / Policy', eventType:'Regulation / Legal',
+    investmentAmount:'$16 billion (bank levies)', location:'Sydney, Australia',
+    sentiment:'neutral', relevanceScore:5,
+    keyInsight:"The disparity in tax obligations between banks and tech giants threatens the stability of Australia's payment infrastructure.",
+    whyItMatters:"Addressing this imbalance is crucial for ensuring banks can continue to invest in infrastructure that underpins daily commerce across Australia.",
+    tags:['Banking','Tax','Regulation','Fintech'], url:'https://www.itnews.com.au' },
+
+  { id:9, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'Startup Daily', timeAgo:'5d ago',
+    title:"Airwallex founder Jack Zhang offering $100,000 to AI startup founders under 25",
+    summary:"Airwallex cofounder Jack Zhang is launching Latitude 37 — a program to support young Australian AI founders with $100,000 grants and mentorship access.",
+    company:'Airwallex', sector:'Fintech / AI', eventType:'Technology / AI',
+    investmentAmount:'$100,000 per founder', location:'Melbourne, Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The program addresses the funding gap for early-stage AI startups in Australia, enabling young founders to compete globally.",
+    whyItMatters:"Fostering young AI talent keeps Australia competitive in the global AI race and builds the next generation of tech founders.",
+    tags:['Airwallex','AI','Grants','Founders'], url:'https://www.startupdaily.net' },
+
+  { id:10, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'InnovationAus', timeAgo:'5d ago',
+    title:"ANU spinout raises $70M to scale Aussie manufacturing",
+    summary:"Liquid Instruments, a Canberra-based startup and ANU spinout, has raised $70 million in a Series C round to expand its advanced test and measurement manufacturing.",
+    company:'Liquid Instruments', sector:'Deep Tech / Manufacturing', eventType:'Funding',
+    investmentAmount:'$70 million', location:'Canberra, Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The funding will enable Liquid Instruments to capitalise on a significant market opportunity by integrating AI-driven test and measurement capabilities at scale.",
+    whyItMatters:"This is a landmark deal for Australian sovereign manufacturing — proving that deep tech spinouts can attract global capital and scale from Australian soil.",
+    tags:['Manufacturing','Deep Tech','Series C','ANU'], url:'https://www.innovationaus.com' },
+
+  { id:11, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'5d ago',
+    title:"Onel Consulting appoints COO to strengthen white-glove enterprise services",
+    summary:"Onel Consulting has appointed Sohan Gunasekera as Chief Operating Officer to enhance its service delivery capacity and meet rising client expectations in managed IT.",
+    company:'Onel Consulting', sector:'IT Services', eventType:'General Business Update',
+    investmentAmount:'N/A', location:'Australia',
+    sentiment:'neutral', relevanceScore:5,
+    keyInsight:"The appointment of a COO is a strategic step for Onel Consulting to ensure reliable service delivery as it scales its enterprise client base.",
+    whyItMatters:"Leadership strengthening in the managed IT services sector signals continued growth demand from Australian enterprises seeking premium technology support.",
+    tags:['IT Services','Leadership','Enterprise','Consulting'], url:'https://www.itnews.com.au' },
+
+  { id:12, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'Startup Daily', timeAgo:'6d ago',
+    title:"The Meta and Microsoft job cuts could be 'AI washing' to bump the stock price",
+    summary:"Meta and Microsoft are implementing significant job cuts, with analysts suggesting the layoffs may be framed as AI-driven efficiency gains to boost stock valuations.",
+    company:'Meta', sector:'AI / Big Tech', eventType:'Technology / AI',
+    investmentAmount:'US$115 billion (market cap impact)', location:'United States',
+    sentiment:'negative', relevanceScore:5,
+    keyInsight:"The layoffs at Meta and Microsoft may reflect a broader trend of companies using AI as a justification for cost-cutting rather than genuine productivity transformation.",
+    whyItMatters:"Understanding the motivations behind these layoffs is crucial for investors — 'AI washing' could mask structural problems and mislead market expectations.",
+    tags:['Meta','Microsoft','AI','Job Cuts'], url:'https://www.startupdaily.net' },
+
+  { id:13, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'6d ago',
+    title:"Colonial First State showcases martech modernisation for superannuation",
+    summary:"Colonial First State is modernising its marketing communications by implementing a decision engine with advanced segmentation to improve member engagement.",
+    company:'Colonial First State', sector:'Superannuation / Martech', eventType:'Expansion',
+    investmentAmount:'N/A', location:'Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The integration of advanced martech tools is enabling Colonial First State to deliver more relevant communications to its superannuation members at scale.",
+    whyItMatters:"Modernising member communications in the $3.5T Australian super industry creates measurable competitive advantage in member retention and satisfaction.",
+    tags:['Superannuation','MarTech','Colonial First State','Digital'], url:'https://www.itnews.com.au' },
+
+  { id:14, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'InnovationAus', timeAgo:'6d ago',
+    title:"PsiQuantum yet to submit Brisbane site plans two years on",
+    summary:"PsiQuantum has not yet submitted development plans for its quantum computing facility at Brisbane Airport, two years after a $940M government commitment.",
+    company:'PsiQuantum', sector:'Quantum Computing', eventType:'Expansion',
+    investmentAmount:'$940 million', location:'Brisbane, Queensland, Australia',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The lack of progress on the Brisbane facility highlights potential risks in government-backed investments in frontier technology without robust milestones.",
+    whyItMatters:"This situation underscores the importance of due diligence in public investments, especially in deep tech where timelines are inherently uncertain.",
+    tags:['Quantum Computing','PsiQuantum','Brisbane','Government'], url:'https://www.innovationaus.com' },
+
+  { id:15, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'7d ago',
+    title:"Macquarie Bank saves 130,000 hours in seven months of Gemini Enterprise use",
+    summary:"Macquarie Bank has successfully implemented Google's Gemini Enterprise, resulting in 130,000 hours of productivity saved across the organisation in under a year.",
+    company:'Macquarie Bank', sector:'Banking / AI', eventType:'Technology / AI',
+    investmentAmount:'N/A', location:'Australia',
+    sentiment:'positive', relevanceScore:4,
+    keyInsight:"The widespread adoption of Gemini Enterprise has significantly enhanced productivity at Macquarie Bank, demonstrating AI's tangible ROI in financial services.",
+    whyItMatters:"Macquarie's 130,000-hour saving is a benchmark for Australian banks considering enterprise AI rollouts — validating the productivity case at scale.",
+    tags:['Macquarie','Google Gemini','AI','Banking'], url:'https://www.itnews.com.au' },
+
+  { id:16, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'7d ago',
+    title:"Amadeus to buy French biometrics firm Idemia Public Security for $1.97B",
+    summary:"Amadeus, a Spanish travel technology firm, plans to acquire French biometrics company Idemia Public Security for $1.97 billion to expand its border security portfolio.",
+    company:'Idemia Public Security', sector:'Travel Tech / Biometrics', eventType:'Expansion',
+    investmentAmount:'$1.97 billion', location:'Global (France / Spain)',
+    sentiment:'positive', relevanceScore:5,
+    keyInsight:"The acquisition is expected to provide high single-digit revenue growth and cost synergies, positioning Amadeus as a leader in biometric border security.",
+    whyItMatters:"Travel tech consolidation through biometrics signals the next phase of airport and border modernisation — relevant to Australian Border Force's digital transformation agenda.",
+    tags:['Biometrics','Travel Tech','M&A','Border Security'], url:'https://www.itnews.com.au' },
+
+  { id:17, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'InnovationAus', timeAgo:'7d ago',
+    title:"OpenAI trial pitting Elon Musk against Sam Altman kicks off in California",
+    summary:"A trial has commenced involving Elon Musk and Sam Altman regarding the transformation of OpenAI from a nonprofit to a for-profit entity worth hundreds of billions.",
+    company:'OpenAI', sector:'AI / Legal', eventType:'Regulation / Legal',
+    investmentAmount:'Hundreds of billions (valuation at stake)', location:'California, United States',
+    sentiment:'negative', relevanceScore:5,
+    keyInsight:"The outcome of this trial could significantly influence the future direction of AI development and the legal obligations of AI companies globally.",
+    whyItMatters:"This case highlights the tension between profit motives and ethical responsibilities in AI — a tension that Australian AI policy will inevitably need to address.",
+    tags:['OpenAI','Legal','AI Ethics','Regulation'], url:'https://www.innovationaus.com' },
+
+  { id:18, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'8d ago',
+    title:"Alleged 'Hafnium' hacker-for-hire extradited to the United States",
+    summary:"Xu Zewei, a Chinese national accused of leading the Hafnium hacking campaign targeting Microsoft Exchange servers, has been extradited from Italy to the US.",
+    company:'Shanghai Powerock', sector:'Cybersecurity', eventType:'Regulation / Legal',
+    investmentAmount:'N/A', location:'United States / Italy / China',
+    sentiment:'negative', relevanceScore:4,
+    keyInsight:"The extradition of Xu Zewei highlights ongoing international efforts to combat state-sponsored cyber intrusions targeting critical enterprise infrastructure.",
+    whyItMatters:"This case underscores the importance of cybersecurity vigilance for Australian enterprises, particularly those using Microsoft infrastructure.",
+    tags:['Cybersecurity','Hacking','Hafnium','Regulation'], url:'https://www.itnews.com.au' },
+
+  { id:19, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'IT News', timeAgo:'8d ago',
+    title:"Always-on defence becomes critical as AI accelerates cyber threats: Infotrust",
+    summary:"Infotrust CEO Simon McKay emphasises the need for organisations to adopt continuous monitoring in response to AI-accelerated cyber threats that outpace traditional defences.",
+    company:'Infotrust', sector:'Cybersecurity', eventType:'Technology / AI',
+    investmentAmount:'N/A', location:'Australia',
+    sentiment:'neutral', relevanceScore:4,
+    keyInsight:"The integration of AI in cyber threats is forcing organisations to fundamentally rethink their security strategies — reactive defences are no longer sufficient.",
+    whyItMatters:"As AI lowers the barrier for sophisticated attacks, Australian businesses face an urgent need to invest in continuous, automated security monitoring.",
+    tags:['Cybersecurity','AI','Infotrust','Defence'], url:'https://www.itnews.com.au' },
+
+  { id:20, category:'technology', categoryLabel:'Technology', dot:'dot-tech', source:'InnovationAus', timeAgo:'8d ago',
+    title:"Tax Office unleashes AI on cumbersome 'shoebox' audits",
+    summary:"The Australian Tax Office is implementing artificial intelligence to enhance the efficiency of audit processes, particularly for complex multi-document 'shoebox' submissions.",
+    company:'Australian Tax Office', sector:'Government / AI', eventType:'Technology / AI',
+    investmentAmount:'N/A', location:'Australia',
+    sentiment:'neutral', relevanceScore:4,
+    keyInsight:"The ATO is leveraging AI to transform its audit processes, dramatically reducing processing time for complex individual and small business tax submissions.",
+    whyItMatters:"This development demonstrates how government agencies can utilise advanced technology to improve service delivery, with implications for compliance costs across Australian businesses.",
+    tags:['ATO','AI','Government','Tax'], url:'https://www.innovationaus.com' },
+];
+
+/* Stats are computed from live articles — see StatsRow component */
+
+const CATEGORIES = [
+  { key:'all',        label:'All',              Icon: Icon.Globe    },
+  { key:'technology', label:'Technology',       Icon: Icon.Tech     },
+
+  { key:'energy',     label:'Energy',           Icon: Icon.Energy   },
+  { key:'retail',     label:'Retail',           Icon: Icon.Retail   },
+  { key:'property',   label:'Property',         Icon: Icon.Property },
+  { key:'policy',     label:'Policy & Economy', Icon: Icon.Policy   },
+];
+
+/* ── Stars ── */
+function Stars({ score }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1,2,3,4,5].map(i => <Icon.Star key={i} className={`w-3.5 h-3.5 ${i<=score?'star-filled':'star-empty'}`} filled={i<=score} />)}
+      <span className="ml-1.5 text-[12px] text-white/60">{score}.0</span>
+    </div>
+  );
+}
+
+/* ── Navbar ── */
+function Navbar({ theme, onToggleTheme }) {
+  return (
+    <FadeIn delay={120} duration={900} y={-6}>
+      <div className="px-6 md:px-12 lg:px-16 pt-6 relative z-20">
+        <nav className="liquid-glass rounded-2xl px-4 sm:px-5 py-2.5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-md flex items-center justify-center" style={{ background:'linear-gradient(140deg,#ffffff,#cfd2d6)', boxShadow:'inset 0 1px 0 rgba(255,255,255,0.7), 0 4px 14px rgba(0,0,0,0.35)' }}>
+              <span className="text-[12px] font-semibold tracking-tight text-black">S</span>
+            </div>
+            <div className="leading-none flex items-baseline gap-1.5">
+              <span className="text-[15px] font-medium tracking-[-0.01em] text-white">Sparsh</span>
+              <span className="text-[15px] font-light tracking-[-0.01em] text-white/75">AI</span>
+              <span className="hidden md:inline ml-2 text-[10px] tracking-[0.24em] uppercase text-white/40">Market Intelligence</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] tracking-[0.18em] uppercase text-white/70" style={{ background:'rgba(255,255,255,0.05)', border:'1px solid rgba(255,255,255,0.12)', backdropFilter:'blur(14px)', WebkitBackdropFilter:'blur(14px)' }}>
+              <Icon.Sparkle className="w-3 h-3 text-white/70" />
+              <span>Beta</span>
+            </span>
+            {/* Theme toggle */}
+            <button aria-label="Toggle theme" className="theme-toggle" onClick={onToggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {theme === 'dark'
+                ? <Icon.Sun  className="w-[15px] h-[15px]" />
+                : <Icon.Moon className="w-[15px] h-[15px]" />}
+            </button>
+            <button aria-label="Account" className="w-9 h-9 rounded-full flex items-center justify-center glass-soft hover:bg-white/10 transition-colors">
+              <Icon.User className="w-4 h-4 text-white/85" />
+            </button>
+          </div>
+        </nav>
+      </div>
+    </FadeIn>
+  );
+}
+
+/* ── Search ── */
+function SearchBlock({ onCategorySelect, onSearch }) {
+  const [active, setActive] = useState(false);
+  const inputRef = useRef(null);
+
+  const submit = () => {
+    const q = inputRef.current?.value?.trim();
+    if (q) { onSearch(q); setActive(false); }
+  };
+
+  useEffect(() => {
+    const fn = (e) => { const r = document.querySelector('[data-search-root]'); if (r && !r.contains(e.target)) setActive(false); };
+    document.addEventListener('mousedown', fn);
+    return () => document.removeEventListener('mousedown', fn);
+  }, []);
+
+  return (
+    <div data-search-root className="w-full">
+      <div style={{ opacity:active?0:1, transform:active?'translateY(-6px) scale(0.985)':'translateY(0) scale(1)', maxHeight:active?0:88, pointerEvents:active?'none':'auto', transition:'all 500ms ease', overflow:'hidden' }}>
+        <div className="search-shell rounded-2xl px-5 py-4 flex items-center gap-3.5">
+          <Icon.Search className="w-[18px] h-[18px] text-white/65 shrink-0" />
+          <input
+            ref={inputRef}
+            placeholder="Search companies, sectors, or topics..."
+            className="search-input"
+            onFocus={() => setActive(true)}
+            onKeyDown={e => { if (e.key === 'Enter') submit(); }}
+          />
+          <button className="send-btn w-9 h-9 rounded-lg flex items-center justify-center shrink-0" onClick={submit}>
+            <Icon.ArrowRight className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+      <div style={{ maxHeight:active?260:0, opacity:active?1:0, transition:'all 500ms ease', overflow:'hidden' }}>
+        <div className={active ? 'pills-show' : ''}>
+          <div className="eyebrow mb-3 flex items-center gap-2">
+            <span>Or browse by category</span>
+            <button onClick={() => setActive(false)} className="ml-auto text-[10.5px] tracking-[0.18em] text-white/45 hover:text-white/80 transition-colors">← Back</button>
+          </div>
+          <div className="flex flex-nowrap items-center gap-2 overflow-x-auto pb-1 mb-3">
+            {CATEGORIES.filter(c => c.key !== 'all').map((c, i) => (
+              <button key={c.key} className="pill pill-enter inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[12px] whitespace-nowrap shrink-0" style={{ animationDelay:`${i*55+60}ms` }}
+                      onClick={() => { setActive(false); onCategorySelect && onCategorySelect(c.key); }}>
+                <c.Icon className="w-3 h-3 text-white/75" /><span>{c.label}</span>
+              </button>
+            ))}
+          </div>
+          <div className="eyebrow mb-2">Or type to search</div>
+          <div className="flex gap-2">
+            <input ref={inputRef} placeholder="e.g. Canva, data centres, clean energy..." className="search-input flex-1 text-[14px]"
+                   style={{ background:'rgba(255,255,255,0.05)', borderRadius:10, padding:'10px 14px', border:'1px solid rgba(255,255,255,0.10)' }}
+                   onKeyDown={e => { if (e.key === 'Enter') submit(); }} />
+            <button className="send-btn rounded-xl px-4 py-2 text-[13px] font-medium flex items-center gap-1.5 shrink-0" onClick={submit}>
+              Search <Icon.ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ── Insight cards ── */
+function InsightCard({ tag, headline, summary, accent }) {
+  return (
+    <div className="liquid-glass rounded-xl p-4 insight-card w-[290px]">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          {accent && <span className={`w-1.5 h-1.5 rounded-full ${accent}`} />}
+          <div className="text-[10px] tracking-[0.2em] uppercase text-white/55 font-medium">{tag}</div>
+        </div>
+        <Icon.ArrowUpRight className="w-3.5 h-3.5 text-white/55" />
+      </div>
+      <h3 className="mt-3 text-[15px] leading-[1.25] tracking-[-0.01em] font-medium text-white">{headline}</h3>
+      <p className="mt-2 text-[12px] leading-relaxed text-white/55">{summary}</p>
+      <a href="#dashboard" className="mt-4 group inline-flex items-center gap-1.5 text-[12px] text-white/85 hover:text-white">
+        Read more <Icon.ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+      </a>
+    </div>
+  );
+}
+
+/* ── Hero ── */
+function Hero({ onCategorySelect, onSearch, theme, onToggleTheme, topArticles }) {
+  const scrollDown = () => document.getElementById('dashboard')?.scrollIntoView({ behavior:'smooth' });
+  const handleSearch = (q) => { onSearch(q); setTimeout(scrollDown, 100); };
+  const handleCategory = (key) => { onCategorySelect(key); setTimeout(scrollDown, 100); };
+
+  const dotAccent = { technology:'bg-sky-400/90', funding:'bg-emerald-400/90', energy:'bg-amber-400/90', retail:'bg-pink-400/90', property:'bg-violet-400/90', policy:'bg-orange-400/90' };
+
+  return (
+    <section className="relative min-h-screen w-full overflow-hidden flex flex-col">
+      <video className="absolute inset-0 w-full h-full object-cover" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260403_050628_c4e32401-fab4-4a27-b7a8-6e9291cd5959.mp4" autoPlay loop muted playsInline />
+      <div className="absolute inset-0 vignette pointer-events-none" />
+      <div className="absolute inset-x-0 top-0 h-40 nav-scrim pointer-events-none" />
+      <div className="relative z-10 flex flex-col flex-1">
+        <Navbar theme={theme} onToggleTheme={onToggleTheme} />
+        <div className="px-6 md:px-12 lg:px-16 flex-1 flex flex-col justify-center pb-14 pt-16 md:pt-24 lg:pt-28">
+          <div className="max-w-7xl w-full mx-auto relative">
+            <div className="lg:max-w-[760px] xl:max-w-[820px]">
+              <FadeIn delay={220} duration={900} y={6}><div className="eyebrow mb-5">Australian Market Intelligence</div></FadeIn>
+              <AnimatedHeading text={"AI-Powered Australian\nMarket Intelligence"} initialDelay={300} charDelay={20}
+                className="text-[40px] sm:text-5xl md:text-[56px] lg:text-[60px] xl:text-[68px] font-normal leading-[1.04]" style={{ letterSpacing:'-0.035em' }} />
+              <FadeIn delay={1100} duration={900} y={8}>
+                <p className="mt-5 text-[15.5px] md:text-[16.5px] text-white/70 max-w-xl leading-relaxed">Track companies, industries, funding, and emerging opportunities across Australia in real time.</p>
+              </FadeIn>
+              <FadeIn delay={1500} duration={900} y={10} className="mt-9 max-w-2xl">
+                <SearchBlock onCategorySelect={handleCategory} onSearch={handleSearch} />
+              </FadeIn>
+              <FadeIn delay={1900} duration={700}>
+                <button onClick={scrollDown} className="mt-10 inline-flex items-center gap-2 text-white/40 hover:text-white/70 transition-colors" style={{background:'none',border:'none',cursor:'pointer'}}>
+                  <span className="text-[10px] tracking-[0.22em] uppercase">Scroll to explore</span>
+                  <span className="text-sm" style={{animation:'bounce 2s ease-in-out infinite'}}>↓</span>
+                </button>
+
+              </FadeIn>
+            </div>
+
+            {/* Insight cards — real data from API */}
+            <div className="hidden lg:block absolute right-0 bottom-0 z-10">
+              <FadeIn delay={1700} duration={900} y={12}>
+                <div className="flex flex-col gap-3">
+                  {topArticles.slice(0,2).map((a, i) => (
+                    <InsightCard key={a.id}
+                      tag={i === 0 ? 'Top Story' : 'Market Signal'}
+                      headline={a.title.length > 60 ? a.title.slice(0,60)+'…' : a.title}
+                      summary={a.source + ' · ' + a.timeAgo}
+                      accent={dotAccent[a.category] || 'bg-sky-400/90'}
+                    />
+                  ))}
+                  {topArticles.length === 0 && <>
+                    <InsightCard tag="Featured Insight" headline="Deep tech funding surges $1.8B in Q1 2026." summary="NRF catalyst driving venture deal activity." accent="bg-emerald-400/90" />
+                    <InsightCard tag="Market Signal" headline="Microsoft commits A$25B to Australian AI." summary="Largest ever tech investment in the region." accent="bg-sky-400/90" />
+                  </>}
+                </div>
+              </FadeIn>
+            </div>
+            <div className="lg:hidden mt-10">
+              <FadeIn delay={1700} duration={900} y={12}>
+                {topArticles[0]
+                  ? <InsightCard tag="Top Story" headline={topArticles[0].title.slice(0,60)+'…'} summary={topArticles[0].source} accent="bg-emerald-400/90" />
+                  : <InsightCard tag="Featured Insight" headline="Deep tech funding surges $1.8B in Q1 2026." summary="NRF catalyst." accent="bg-emerald-400/90" />}
+              </FadeIn>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Stats ── */
+function StatCard({ value, label, delta, Icon: Ico, color }) {
+  const { ref, display } = useCountUp(value);
+  return (
+    <div ref={ref} className="stat-card rounded-2xl p-5">
+      <div className={`${color} mb-3`}><Ico className="w-5 h-5" /></div>
+      <div className="stat-number text-[28px] font-semibold tracking-[-0.03em] text-white leading-none">{display}</div>
+      <div className="mt-1.5 text-[12px] text-white/50">{label}</div>
+      <div className="mt-1 text-[11px] text-white/30">{delta}</div>
+    </div>
+  );
+}
+
+function StatsRow({ articles }) {
+  const sources   = new Set(articles.map(a => a.source)).size;
+  const companies = new Set(articles.map(a => a.company).filter(Boolean)).size;
+  const avgScore  = articles.length
+    ? (articles.reduce((s, a) => s + (a.relevanceScore || 0), 0) / articles.length).toFixed(1)
+    : '0';
+
+  const stats = [
+    { label:'Articles Tracked',  value: String(articles.length), delta:'From MongoDB',          Icon: Icon.Newspaper, color:'text-sky-400' },
+    { label:'News Sources',      value: String(sources),          delta:'Active RSS feeds',      Icon: Icon.Globe,     color:'text-emerald-400' },
+    { label:'Companies Tracked', value: String(companies),        delta:'Unique entities found', Icon: Icon.Building,  color:'text-amber-400' },
+    { label:'Avg Relevance',     value: avgScore,                  delta:'Out of 5.0',            Icon: Icon.TrendUp,   color:'text-violet-400' },
+  ];
+
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10">
+      {stats.map((s, i) => <StatCard key={i} {...s} />)}
+    </div>
+  );
+}
+
+/* ── Article card ── */
+const GLOW = {
+  'dot-tech':     '96,165,250',
+  'dot-funding':  '52,211,153',
+  'dot-energy':   '251,191,36',
+  'dot-retail':   '244,114,182',
+  'dot-property': '167,139,250',
+  'dot-policy':   '251,146,60',
+};
+
+const CAT_HEX = {
+  'dot-tech':     '#60a5fa',
+  'dot-funding':  '#34d399',
+  'dot-energy':   '#fbbf24',
+  'dot-retail':   '#f472b6',
+  'dot-property': '#a78bfa',
+  'dot-policy':   '#fb923c',
+};
+
+/* ── Company logo — letter avatar (always reliable) ── */
+function CompanyLogo({ company, rgb, size = 24 }) {
+  const letter = (company || '?').replace(/^(The |An |A )/i, '').charAt(0).toUpperCase();
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      width: size, height: size, borderRadius: Math.floor(size * 0.3),
+      flexShrink: 0,
+      fontSize: Math.floor(size * 0.46), fontWeight: 700, letterSpacing: '-0.01em',
+      background: `rgba(${rgb}, 0.20)`,
+      color: `rgba(${rgb}, 1)`,
+      border: `1px solid rgba(${rgb}, 0.30)`,
+      boxShadow: `0 0 0 2px rgba(${rgb}, 0.06)`,
+    }}>
+      {letter}
+    </span>
+  );
+}
+
+function ArticleCardItem({ article, onClick }) {
+  const [hovered, setHovered] = useState(false);
+  const rgb = GLOW[article.dot] || '255,255,255';
+
+  return (
+    <div
+      className="article-card rounded-2xl p-5 h-full flex flex-col"
+      onClick={() => onClick(article)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={hovered ? {
+        borderColor: `rgba(${rgb},0.45)`,
+        boxShadow: `0 0 0 1px rgba(${rgb},0.12), 0 8px 32px rgba(${rgb},0.12)`,
+      } : {}}
+    >
+      {/* Top row: logo + category + time */}
+      <div className="flex items-center gap-2 mb-3">
+        <CompanyLogo company={article.company} rgb={rgb} size={24} />
+        <span className="text-[10.5px] tracking-[0.16em] uppercase text-white/50 font-medium">{article.categoryLabel}</span>
+        <span className="ml-auto text-[11px] text-white/35">{article.timeAgo}</span>
+      </div>
+
+      <h3 className="text-[14px] font-medium leading-[1.3] tracking-[-0.01em] text-white mb-2">{article.title}</h3>
+      <p className="text-[12.5px] text-white/55 leading-relaxed flex-1" style={{ display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>{article.summary}</p>
+
+      {/* Bottom row: sentiment + stock badge + view insight */}
+      <div className="mt-4 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5 min-w-0">
+          <div className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-medium badge-${article.sentiment} shrink-0`}>
+            <span className={`w-1 h-1 rounded-full ${article.sentiment==='positive'?'bg-emerald-400':article.sentiment==='negative'?'bg-red-400':'bg-slate-400'}`} />
+            {article.sentiment.charAt(0).toUpperCase()+article.sentiment.slice(1)}
+          </div>
+          {article.stockSymbol && (
+            <span className="text-[9px] px-1.5 py-0.5 rounded font-mono tracking-wide shrink-0"
+                  style={{ background:'rgba(96,165,250,0.12)', border:'1px solid rgba(96,165,250,0.22)', color:'#60a5fa' }}>
+              {article.stockSymbol}
+            </span>
+          )}
+        </div>
+        <span className="text-[11px] flex items-center gap-1 transition-colors duration-200 shrink-0"
+              style={{ color: hovered ? `rgba(${rgb},0.9)` : 'rgba(255,255,255,0.28)' }}>
+          View insight
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+               style={{ transform: hovered ? 'translateX(2px)' : 'translateX(0)', transition:'transform 200ms ease' }}>
+            <path d="M5 12h14M13 5l7 7-7 7"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Centered article modal (reference design) + upgrades ── */
+/* ── Section label with icon ── */
+/* ── Stock data hook ── */
+function useStockData(symbol) {
+  const [data, setData]       = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!symbol) return;
+    setLoading(true);
+    fetch(`http://localhost:8000/api/stock/${encodeURIComponent(symbol)}`)
+      .then(r => r.json())
+      .then(d => { setData(d); setLoading(false); })
+      .catch(() => setLoading(false));
+  }, [symbol]);
+
+  return { data, loading };
+}
+
+/* ── Stock sparkline (real prices) ── */
+function StockSparkline({ prices, color, positive }) {
+  if (!prices || prices.length < 2) return null;
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const range = max - min || 1;
+  const w = 420, h = 60;
+  const pts = prices.map((p, i) => {
+    const x = (i / (prices.length - 1)) * w;
+    const y = h - ((p - min) / range) * (h - 8) - 4;
+    return `${x},${y}`;
+  }).join(' ');
+  const lineColor = positive ? '#34d399' : '#f87171';
+  const fillId = `sf-${prices.length}`;
+  return (
+    <svg width="100%" height="60" viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={lineColor} stopOpacity="0.25"/>
+          <stop offset="100%" stopColor={lineColor} stopOpacity="0.01"/>
+        </linearGradient>
+      </defs>
+      <polyline points={pts} fill="none" stroke={lineColor} strokeWidth="1.8" strokeOpacity="0.9"/>
+      <polygon points={`0,${h} ${pts} ${w},${h}`} fill={`url(#${fillId})`}/>
+    </svg>
+  );
+}
+
+/* ── External modal nav button ── */
+function NavBtn({ onClick, disabled, children }) {
+  return (
+    <button onClick={onClick} disabled={disabled} style={{
+      width:48, height:48, borderRadius:'50%', flexShrink:0,
+      background: disabled ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.08)',
+      border: disabled ? '1px solid rgba(255,255,255,0.07)' : '1px solid rgba(255,255,255,0.16)',
+      backdropFilter:'blur(24px)', WebkitBackdropFilter:'blur(24px)',
+      color: disabled ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.80)',
+      cursor: disabled ? 'default' : 'pointer',
+      display:'flex', alignItems:'center', justifyContent:'center',
+      boxShadow: disabled ? 'none' : '0 4px 20px rgba(0,0,0,0.3)',
+      transition:'all 220ms ease',
+    }}>{children}</button>
+  );
+}
+
+/* ── Article modal ── */
+function ArticleModal({ article, onClose, onPrev, onNext, hasPrev, hasNext, index, total, theme }) {
+  const color = CAT_HEX[article.dot] || '#60a5fa';
+  const rgb   = GLOW[article.dot]    || '96,165,250';
+  const { data: stock, loading: stockLoading } = useStockData(article.stockSymbol);
+
+  useEffect(() => {
+    const fn = e => {
+      if (e.key === 'Escape')                onClose();
+      if (e.key === 'ArrowLeft'  && hasPrev) onPrev();
+      if (e.key === 'ArrowRight' && hasNext) onNext();
+    };
+    document.addEventListener('keydown', fn);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', fn); document.body.style.overflow = ''; };
+  }, [onClose, onPrev, onNext, hasPrev, hasNext]);
+
+  return (
+    <div className="modal-backdrop" onClick={e => { if (e.target === e.currentTarget) onClose(); }}>
+      {/* Premium space background behind the modal card */}
+      <img src="/5373.jpg" alt=""
+           style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:0.85}}/>
+      <div className="modal-bg-overlay"/>
+
+      {/* [← nav]  [modal card]  [→ nav] */}
+      <div className="modal-outer" style={{zIndex:2}}>
+
+        {/* LEFT external nav */}
+        <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:8,flexShrink:0}}>
+          <NavBtn onClick={onPrev} disabled={!hasPrev}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </NavBtn>
+          <div style={{textAlign:'center'}}>
+            <div style={{fontSize:9,letterSpacing:'0.18em',textTransform:'uppercase',color:'rgba(255,255,255,0.45)',fontWeight:600}}>Previous</div>
+            {total > 1 && <div style={{fontSize:9,color:'rgba(255,255,255,0.22)',marginTop:3}}>{index} / {total}</div>}
+          </div>
+        </div>
+
+        {/* MODAL CARD */}
+        <div className="modal-box">
+
+          {/* ── Hero image strip ── */}
+          <div style={{
+            position:'relative', height:156, borderRadius:'22px 22px 0 0', overflow:'hidden',
+            background:`linear-gradient(135deg, rgba(${rgb},0.25) 0%, rgba(7,9,14,0.9) 100%)`,
+          }}>
+            {/* Background image */}
+            {article.heroImage && (
+              <img
+                src={article.heroImage}
+                alt=""
+                style={{
+                  position:'absolute', inset:0, width:'100%', height:'100%',
+                  objectFit:'cover', opacity:0.55,
+                }}
+                onError={e => { e.target.style.display = 'none'; }}
+              />
+            )}
+            {/* Gradient overlay — left side darker for text, right side lighter for image */}
+            <div style={{
+              position:'absolute', inset:0,
+              background:'linear-gradient(105deg, rgba(7,9,14,0.88) 0%, rgba(7,9,14,0.60) 45%, rgba(7,9,14,0.25) 100%)',
+            }}/>
+            {/* Category accent line */}
+            <div style={{
+              position:'absolute', top:0, left:0, right:0, height:2, borderRadius:'22px 22px 0 0',
+              background:`linear-gradient(90deg,${color} 0%,${color}55 55%,transparent 100%)`,
+            }}/>
+            {/* Close + counter — top right */}
+            <div style={{position:'absolute', top:14, right:16, display:'flex', alignItems:'center', gap:8, zIndex:2}}>
+              {total > 1 && (
+                <span style={{fontSize:10, color:'rgba(255,255,255,0.38)', letterSpacing:'0.04em'}}>
+                  {index+1} / {total}
+                </span>
+              )}
+              <button onClick={onClose}
+                style={{
+                  width:32, height:32, borderRadius:'50%',
+                  background:'rgba(0,0,0,0.4)', border:'1px solid rgba(255,255,255,0.14)',
+                  backdropFilter:'blur(12px)', WebkitBackdropFilter:'blur(12px)',
+                  display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer',
+                }}>
+                <Icon.X className="w-3.5 h-3.5 text-white/75"/>
+              </button>
+            </div>
+            {/* Company identity — bottom left */}
+            <div style={{
+              position:'absolute', bottom:16, left:20,
+              display:'flex', alignItems:'center', gap:14, zIndex:2,
+            }}>
+              <CompanyLogo company={article.company} rgb={rgb} size={48}/>
+              <div>
+                <div style={{fontSize:16, fontWeight:600, color:'#fff', letterSpacing:'-0.01em', lineHeight:1.2}}>
+                  {article.company}
+                </div>
+                <div style={{display:'flex', alignItems:'center', gap:8, marginTop:5, flexWrap:'wrap'}}>
+                  <span style={{
+                    fontSize:9, letterSpacing:'0.18em', textTransform:'uppercase',
+                    color, fontWeight:600,
+                  }}>{article.categoryLabel}</span>
+                  <span style={{color:'rgba(255,255,255,0.25)', fontSize:9}}>·</span>
+                  <span style={{fontSize:10, color:'rgba(255,255,255,0.45)'}}>
+                    {article.source} · {article.timeAgo}
+                  </span>
+                  {article.stockSymbol && (
+                    <span style={{
+                      fontSize:9, fontWeight:700, padding:'1px 6px', borderRadius:4,
+                      fontFamily:'monospace',
+                      background:`rgba(${rgb},0.20)`, border:`1px solid rgba(${rgb},0.35)`, color,
+                    }}>{article.stockSymbol}</span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Title + content */}
+          <div className="p-6 md:p-8 pt-5">
+            <h2 className="text-[21px] md:text-[24px] font-medium leading-[1.28] tracking-[-0.02em] text-white mb-6">
+              {article.title}
+            </h2>
+
+          {/* Two columns */}
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* LEFT */}
+            <div>
+              <div className="eyebrow mb-3">Key Details</div>
+              <div className="grid grid-cols-2 gap-2 mb-2">
+                {[
+                  {label:'Company', value:article.company,          Icon:Icon.Building},
+                  {label:'Sector',  value:article.sector,           Icon:Icon.Tag},
+                  {label:'Event',   value:article.eventType,        Icon:Icon.Lightbulb},
+                  {label:'Amount',  value:article.investmentAmount, Icon:Icon.DollarSign},
+                ].map((d,i) => (
+                  <div key={i} className="stat-card rounded-xl p-3">
+                    <div className="flex items-center gap-1.5 mb-1.5">
+                      <d.Icon className="w-3 h-3 text-white/35"/>
+                      <span className="text-[9.5px] text-white/35 tracking-[0.12em] uppercase">{d.label}</span>
+                    </div>
+                    <div className="text-[13px] font-medium text-white leading-snug">{d.value}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="stat-card rounded-xl p-3 mb-5 flex items-center gap-2.5">
+                <Icon.MapPin className="w-3.5 h-3.5 text-white/35 shrink-0"/>
+                <div>
+                  <div className="text-[9.5px] text-white/35 tracking-[0.12em] uppercase mb-0.5">Location</div>
+                  <div className="text-[13px] font-medium text-white">{article.location}</div>
+                </div>
+              </div>
+
+              {article.stockSymbol && (
+                <div className="mb-5 p-4 rounded-xl" style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.08)'}}>
+                  {/* Header row */}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="eyebrow">Market Data</div>
+                    <span className="font-mono text-[9.5px] font-bold px-2 py-0.5 rounded"
+                          style={{background:`rgba(${rgb},0.15)`,color,border:`1px solid rgba(${rgb},0.25)`}}>
+                      {article.stockSymbol}
+                    </span>
+                  </div>
+
+                  {stockLoading && (
+                    <div style={{textAlign:'center',padding:'14px 0',fontSize:11,color:'rgba(255,255,255,0.3)'}}>
+                      Fetching live data…
+                    </div>
+                  )}
+
+                  {!stockLoading && stock && !stock.error && stock.price && (
+                    <>
+                      {/* Price row */}
+                      <div className="flex items-end gap-3 mb-3">
+                        <div>
+                          <div style={{fontSize:9,letterSpacing:'0.14em',textTransform:'uppercase',color:'rgba(255,255,255,0.35)',marginBottom:3}}>
+                            {stock.exchange} · {stock.currency}
+                          </div>
+                          <div style={{fontSize:22,fontWeight:700,letterSpacing:'-0.02em',color:'#fff',lineHeight:1}}>
+                            {stock.price?.toLocaleString()}
+                          </div>
+                        </div>
+                        <div style={{
+                          paddingBottom:2,
+                          fontSize:12, fontWeight:600,
+                          color: stock.changePct >= 0 ? '#34d399' : '#f87171',
+                        }}>
+                          {stock.changePct >= 0 ? '▲' : '▼'} {Math.abs(stock.changePct).toFixed(2)}%
+                          <span style={{fontWeight:400,fontSize:11,marginLeft:4}}>
+                            ({stock.change >= 0 ? '+' : ''}{stock.change?.toFixed(2)})
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Sparkline */}
+                      {stock.prices?.length > 1 && (
+                        <div style={{borderRadius:8,overflow:'hidden',marginBottom:8,background:'rgba(255,255,255,0.02)',border:'1px solid rgba(255,255,255,0.06)'}}>
+                          <StockSparkline prices={stock.prices} positive={stock.changePct >= 0} />
+                        </div>
+                      )}
+
+                      {/* Footer */}
+                      <div style={{fontSize:10,color:'rgba(255,255,255,0.28)'}}>
+                        30-day chart · via Yahoo Finance · refreshes every 15 min
+                      </div>
+                    </>
+                  )}
+
+                  {!stockLoading && stock && (stock.error || !stock.price) && (
+                    <div style={{textAlign:'center',padding:'12px 0'}}>
+                      <div style={{fontSize:11,color:'rgba(255,255,255,0.35)',marginBottom:3}}>Price unavailable</div>
+                      <div style={{fontSize:10,color:'rgba(255,255,255,0.20)'}}>Markets may be closed</div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="grid grid-cols-2 gap-2 mb-5">
+                <div className="stat-card rounded-xl p-3">
+                  <div className="text-[9.5px] text-white/35 tracking-[0.12em] uppercase mb-2">Sentiment</div>
+                  <div className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-medium badge-${article.sentiment}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full ${article.sentiment==='positive'?'bg-emerald-400':article.sentiment==='negative'?'bg-red-400':'bg-slate-400'}`}/>
+                    {article.sentiment.charAt(0).toUpperCase()+article.sentiment.slice(1)}
+                  </div>
+                </div>
+                <div className="stat-card rounded-xl p-3">
+                  <div className="text-[9.5px] text-white/35 tracking-[0.12em] uppercase mb-2">Relevance Score</div>
+                  <Stars score={article.relevanceScore}/>
+                </div>
+              </div>
+
+              {article.tags?.length > 0 && (
+                <div className="mb-5">
+                  <div className="eyebrow mb-2">Tags</div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {article.tags.map((t,i) => <span key={i} className="rounded-full px-2.5 py-1 text-[11px] text-white/65 glass-soft">{t}</span>)}
+                  </div>
+                </div>
+              )}
+
+              <div className="stat-card rounded-xl p-3 mb-4">
+                <div className="text-[9.5px] text-white/35 tracking-[0.12em] uppercase mb-1">Original Article</div>
+                <div className="text-[12px] text-white/45 truncate">{article.url}</div>
+              </div>
+              <a href={article.url} target="_blank" rel="noopener noreferrer"
+                 className="w-full flex items-center justify-center gap-2 rounded-xl py-3 text-[13px] font-medium text-black send-btn">
+                Read Full Article <Icon.ExternalLink className="w-3.5 h-3.5"/>
+              </a>
+            </div>
+
+            {/* RIGHT */}
+            <div className="flex flex-col gap-5">
+              {article.keyInsight && (
+                <div>
+                  <div className="eyebrow mb-2">Key Insight</div>
+                  <p className="text-[14px] text-white/80 leading-relaxed">{article.keyInsight}</p>
+                </div>
+              )}
+              <div className="border-t border-white/[0.06]"/>
+              {article.whyItMatters && (
+                <div>
+                  <div className="eyebrow mb-2">Why It Matters</div>
+                  <p className="text-[14px] text-white/80 leading-relaxed">{article.whyItMatters}</p>
+                </div>
+              )}
+              <div className="border-t border-white/[0.06]"/>
+              {article.summary && (
+                <div>
+                  <div className="eyebrow mb-2">Summary</div>
+                  <p className="text-[13.5px] text-white/60 leading-relaxed">{article.summary}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        </div>{/* end modal-box */}
+
+        {/* RIGHT external nav */}
+        <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:8,flexShrink:0}}>
+          <NavBtn onClick={onNext} disabled={!hasNext}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </NavBtn>
+          <div style={{textAlign:'center'}}>
+            <div style={{fontSize:9,letterSpacing:'0.18em',textTransform:'uppercase',color:'rgba(255,255,255,0.45)',fontWeight:600}}>Next</div>
+            {total > 1 && <div style={{fontSize:9,color:'rgba(255,255,255,0.22)',marginTop:3}}>{index+2} / {total}</div>}
+          </div>
+        </div>
+
+      </div>{/* end modal-outer */}
+    </div>
+  );
+}
+
+/* ── Live dot indicator ── */
+function LiveDot() {
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      <span style={{
+        display:'inline-block', width:6, height:6, borderRadius:'50%',
+        background:'#34d399',
+        boxShadow:'0 0 0 0 rgba(52,211,153,0.6)',
+        animation:'livePulse 2s ease-in-out infinite',
+      }}/>
+
+      <span style={{fontSize:10,letterSpacing:'0.18em',textTransform:'uppercase',color:'rgba(52,211,153,0.85)',fontWeight:500}}>Live</span>
+    </span>
+  );
+}
+
+/* ── Dashboard ── */
+const VIDEOS = {
+  dark:  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260411_104032_69319010-2458-492b-b04d-b40a5dfa4482.mp4',
+  light: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260417_061226_74f0749c-a22d-42b3-895e-5d6203bc741c.mp4',
+};
+
+function Dashboard({ articles, activeCategory, onCategoryChange, theme, searchQuery, onClearSearch, lastUpdated }) {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const [page, setPage]   = useState(0);
+  const perPage            = usePerPage();
+  const titleRef           = useReveal();
+
+  // Apply search filter on top of category filter
+  const categoryFiltered = activeCategory === 'all' ? articles : articles.filter(a => a.category === activeCategory);
+  const filtered = searchQuery
+    ? categoryFiltered.filter(a => {
+        const q = searchQuery.toLowerCase();
+        return a.title?.toLowerCase().includes(q)
+            || a.company?.toLowerCase().includes(q)
+            || a.summary?.toLowerCase().includes(q)
+            || a.source?.toLowerCase().includes(q)
+            || a.tags?.some(t => t.toLowerCase().includes(q));
+      })
+    : categoryFiltered;
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+  const safePage   = Math.min(page, totalPages - 1);
+
+  const selectedArticle = selectedIndex !== null ? filtered[selectedIndex] : null;
+
+  useEffect(() => { setPage(0); }, [activeCategory, perPage]);
+
+  const goTo = (n) => {
+    if (n < 0 || n >= totalPages) return;
+    setPage(n);
+  };
+
+  /* Arrow key navigation */
+  useEffect(() => {
+    const fn = (e) => {
+      if (e.key === 'ArrowLeft')  goTo(safePage - 1);
+      if (e.key === 'ArrowRight') goTo(safePage + 1);
+    };
+    window.addEventListener('keydown', fn);
+    return () => window.removeEventListener('keydown', fn);
+  }, [safePage, totalPages]);
+
+  /* Article count per category */
+  const countFor = (key) => key === 'all' ? articles.length : articles.filter(a => a.category === key).length;
+
+  /* Grid cols class based on perPage */
+  const gridCols = perPage === 4 ? 'grid-cols-2'
+                 : perPage === 6 ? 'grid-cols-2 md:grid-cols-3'
+                 :                 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4';
+
+  return (
+    <section id="dashboard" className={`dashboard-section py-24 px-5 md:px-10 lg:px-16${theme === 'light' ? ' light' : ''}`}>
+
+      {/* ── Background video (theme-aware) ── */}
+      <video key={theme} className="dashboard-video" src={VIDEOS[theme]} autoPlay loop muted playsInline />
+      <div className={`dashboard-video-overlay${theme === 'light' ? ' light' : ''}`} />
+
+      {/* ── Animated ambient background ── */}
+      <div className="bg-orb" style={{
+        top:'-8%', left:'-6%', width:800, height:800,
+        background:'radial-gradient(circle, rgba(96,165,250,0.07) 0%, transparent 70%)',
+        animation:'orbDrift1 22s ease-in-out infinite',
+      }}/>
+      <div className="bg-orb" style={{
+        bottom:'-10%', right:'-8%', width:700, height:700,
+        background:'radial-gradient(circle, rgba(167,139,250,0.07) 0%, transparent 70%)',
+        animation:'orbDrift2 28s ease-in-out infinite',
+      }}/>
+      <div className="bg-orb" style={{
+        top:'35%', left:'38%', width:500, height:500,
+        background:'radial-gradient(circle, rgba(52,211,153,0.04) 0%, transparent 70%)',
+        animation:'orbDrift3 18s ease-in-out infinite',
+      }}/>
+      <div className="bg-orb" style={{
+        top:'60%', left:'15%', width:350, height:350,
+        background:'radial-gradient(circle, rgba(251,191,36,0.035) 0%, transparent 70%)',
+        animation:'orbDrift1 32s ease-in-out infinite reverse',
+      }}/>
+      <div className="dashboard-grid-texture" />
+
+      {/* ── Outer max-width wrapper ── */}
+      <div className="max-w-7xl mx-auto relative">
+
+        {/* ════════════════════════════════
+            INTEL PANEL
+        ════════════════════════════════ */}
+        <div className={`intel-panel${theme === 'light' ? ' light' : ''}`}>
+          {/* Panel decorations */}
+          <div className="intel-panel-shimmer" />
+          <div className="intel-panel-glow" />
+
+          <div className="px-7 md:px-10 pt-9 pb-10 relative z-10">
+
+            {/* ── Panel header ── */}
+            <div ref={titleRef} className="reveal mb-7">
+              <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
+                <div className="flex items-center gap-3">
+                  <div className="eyebrow">Australian Market Intelligence</div>
+                  <LiveDot />
+                </div>
+                <div className="flex items-center gap-3" style={{letterSpacing:'0.04em'}}>
+                  <span className="text-[11.5px] text-white/25">
+                    {filtered.length} article{filtered.length !== 1 ? 's' : ''}
+                    {totalPages > 1 && ` · ${safePage + 1} / ${totalPages}`}
+                  </span>
+                  {lastUpdated && (
+                    <span className="text-[10.5px] text-white/20 flex items-center gap-1">
+                      <span style={{ display:'inline-block', width:5, height:5, borderRadius:'50%', background:'#34d399' }} />
+                      {timeSince(lastUpdated)}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <h2 className="text-[26px] sm:text-[32px] font-normal tracking-[-0.03em] text-white leading-tight mb-1.5">
+                Latest Market Intelligence
+              </h2>
+              <p className="text-[14px] text-white/38">
+                AI-curated signals across Australia's most active sectors.
+              </p>
+            </div>
+
+            <div className="panel-header-bar" />
+
+            {/* ── Stats ── */}
+            <StatsRow articles={articles} />
+
+            {/* Search active banner */}
+            {searchQuery && (
+              <div className="search-active-bar mb-4">
+                <Icon.Search className="w-3.5 h-3.5 text-white/40 shrink-0" />
+                <span>Results for <strong className="text-white/80">"{searchQuery}"</strong> — {filtered.length} article{filtered.length!==1?'s':''}</span>
+                <button onClick={onClearSearch} className="ml-auto text-[11px] text-white/40 hover:text-white/80 transition-colors">✕ Clear</button>
+              </div>
+            )}
+
+            {/* ── Category tabs ── */}
+            <div className="flex items-center gap-2 flex-wrap mb-7">
+              {CATEGORIES.map(c => {
+                const count = countFor(c.key);
+                return (
+                  <button key={c.key}
+                    className={`pill inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-[12px] ${activeCategory === c.key ? 'active' : ''}`}
+                    onClick={() => onCategoryChange(c.key)}>
+                    <c.Icon className="w-3 h-3 text-white/75" />
+                    <span>{c.label}</span>
+                    {count > 0 && <span className="pill-count">{count}</span>}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* ════════════════════════
+                HORIZONTAL SLIDE TRACK
+            ════════════════════════ */}
+            <div className="slide-viewport">
+              <div
+                className="slide-track"
+                style={{ transform: `translateX(-${safePage * 100}%)` }}
+              >
+                {Array.from({ length: totalPages }).map((_, pi) => {
+                  const pageArticles = filtered.slice(pi * perPage, (pi + 1) * perPage);
+                  return (
+                    <div key={pi} className="slide-page-item">
+                      {pageArticles.length > 0 ? (
+                        <div className={`grid ${gridCols} gap-4`} style={{ minHeight: 320 }}>
+                          {pageArticles.map(article => (
+                            <ArticleCardItem key={article.id} article={article}
+                              onClick={a => setSelectedIndex(filtered.findIndex(f => f.id === a.id))} />
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center py-24 gap-3">
+                          <div className="text-[32px]" style={{filter:'grayscale(1)',opacity:0.3}}>📭</div>
+                          <p className="text-[13px] text-white/30">No articles in this category yet.</p>
+                          <p className="text-[11.5px] text-white/18" style={{letterSpacing:'0.12em'}}>Run the pipeline for this category to populate it.</p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* ════════════════════════
+                PAGINATION
+            ════════════════════════ */}
+            {totalPages > 1 && (
+              <div className="flex items-center justify-between mt-8 pt-6"
+                   style={{ borderTop:'1px solid rgba(255,255,255,0.055)' }}>
+
+                <button className="page-btn" onClick={() => goTo(safePage - 1)} disabled={safePage === 0}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg> Previous
+                </button>
+
+                {/* Dot indicators + keyboard hint */}
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: totalPages }).map((_, i) => (
+                      <button
+                        key={i}
+                        className={`page-dot ${i === safePage ? 'active' : ''}`}
+                        onClick={() => goTo(i)}
+                        aria-label={`Page ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <span style={{fontSize:10,color:'rgba(255,255,255,0.18)',letterSpacing:'0.14em'}}>← → to navigate</span>
+                </div>
+
+                <button className="page-btn" onClick={() => goTo(safePage + 1)} disabled={safePage === totalPages - 1}>
+                  Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+              </div>
+            )}
+
+          </div>{/* end inner padding */}
+        </div>{/* end intel-panel */}
+      </div>
+
+      {selectedArticle && (
+        <ArticleModal
+          article={selectedArticle}
+          onClose={() => setSelectedIndex(null)}
+          onPrev={() => setSelectedIndex(i => Math.max(0, i - 1))}
+          onNext={() => setSelectedIndex(i => Math.min(filtered.length - 1, i + 1))}
+          hasPrev={selectedIndex > 0}
+          hasNext={selectedIndex < filtered.length - 1}
+          index={selectedIndex}
+          total={filtered.length}
+          theme={theme}
+        />
+      )}
+    </section>
+  );
+}
+
+/* ── Footer ── */
+function Footer() {
+  return (
+    <footer className="px-6 md:px-12 lg:px-16 py-10 border-t border-white/[0.06]">
+      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background:'linear-gradient(140deg,#ffffff,#cfd2d6)' }}><span className="text-[10px] font-semibold text-black">S</span></div>
+          <span className="text-[13px] text-white/35">Sparsh AI · Australian Market Intelligence</span>
+        </div>
+        <div className="flex items-center gap-3 text-[11.5px] text-white/25">
+          <span>AI-Powered Insights</span><span>·</span><span>Real-time Market Data</span><span>·</span><span>Expert Analysis</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ── Loading skeleton ── */
+function LoadingState() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-5" style={{ background:'#07080a' }}>
+      <div style={{ width:40, height:40, border:'2px solid rgba(255,255,255,0.08)', borderTopColor:'rgba(255,255,255,0.6)', borderRadius:'50%', animation:'spin 0.8s linear infinite' }} />
+      <p className="text-[13px] text-white/40 tracking-[0.18em] uppercase">Loading intelligence feed…</p>
+
+    </div>
+  );
+}
+
+/* ── Error state ── */
+function ErrorState({ message }) {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background:'#07080a' }}>
+      <p className="text-[15px] text-red-400/80">Could not connect to the API</p>
+      <p className="text-[12px] text-white/30 max-w-sm text-center">{message}</p>
+      <p className="text-[11px] text-white/20 tracking-[0.14em] uppercase">Make sure the API server is running:<br/>cd src &amp;&amp; uvicorn api:app --port 8000</p>
+    </div>
+  );
+}
+
+/* ── App ── */
+/* ── Time-since helper ── */
+function timeSince(date) {
+  const secs = Math.floor((Date.now() - date.getTime()) / 1000);
+  if (secs < 10)  return 'just now';
+  if (secs < 60)  return `${secs}s ago`;
+  const mins = Math.floor(secs / 60);
+  if (mins < 60)  return `${mins}m ago`;
+  return `${Math.floor(mins / 60)}h ago`;
+}
+
+function App() {
+  const [activeCategory, setActiveCategory] = useState('all');
+  const [articles, setArticles]             = useState([]);
+  const [loading, setLoading]               = useState(true);
+  const [error, setError]                   = useState(null);
+  const [theme, setTheme]                   = useState('dark');
+  const [searchQuery, setSearchQuery]       = useState('');
+  const [lastUpdated, setLastUpdated]       = useState(null);
+
+  const scrolled    = useScrolled(120);
+  const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark');
+
+  const handleSearch = (q) => {
+    setSearchQuery(q);
+    setActiveCategory('all');
+  };
+
+  /* Fetch articles — extracted so the interval can call it too */
+  const fetchArticles = useCallback((isInitial = false) => {
+    fetch('http://localhost:8000/api/articles')
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+      .then(data => {
+        setArticles(data);
+        setLastUpdated(new Date());
+        if (isInitial) setLoading(false);
+      })
+      .catch(e => { if (isInitial) { setError(e.message); setLoading(false); } });
+  }, []);
+
+  useEffect(() => {
+    fetchArticles(true);                          // initial load
+    const interval = setInterval(() => fetchArticles(false), 5 * 60 * 1000); // refresh every 5 min
+    return () => clearInterval(interval);
+  }, [fetchArticles]);
+
+  if (loading) return <LoadingState />;
+  if (error)   return <ErrorState message={error} />;
+
+  // Top 2 articles by relevance for hero insight cards
+  const topArticles = [...articles].sort((a, b) => b.relevanceScore - a.relevanceScore).slice(0, 2);
+
+  return (
+    <div>
+      {/* Sticky nav — appears after scrolling past hero */}
+      <StickyNav theme={theme} onToggleTheme={toggleTheme} visible={scrolled} />
+
+      <Hero
+        onCategorySelect={cat => { setActiveCategory(cat); setSearchQuery(''); }}
+        onSearch={handleSearch}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        topArticles={topArticles}
+      />
+      <Dashboard
+        articles={articles}
+        activeCategory={activeCategory}
+        onCategoryChange={cat => { setActiveCategory(cat); setSearchQuery(''); }}
+        theme={theme}
+        searchQuery={searchQuery}
+        onClearSearch={() => setSearchQuery('')}
+        lastUpdated={lastUpdated}
+      />
+      <Footer />
+
+      {/* Back-to-top button */}
+      <button
+        className={`back-top${scrolled ? '' : ' hidden'}`}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+      </button>
+    </div>
+  );
+}
+
+class ErrorBoundary extends React.Component {
+  constructor(p) { super(p); this.state = {err:null}; }
+  static getDerivedStateFromError(e) { return {err:e}; }
+  componentDidCatch(e, info) { console.error('Render error:', e, info.componentStack); }
+  render() {
+    if (this.state.err) return (
+      <div style={{color:'#f87171',background:'#07080a',padding:40,fontFamily:'monospace',minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',textAlign:'center'}}>
+        <div>
+          <div style={{fontSize:14,fontWeight:'bold',marginBottom:16}}>React Render Error</div>
+          <div style={{fontSize:13,opacity:0.8,maxWidth:700}}>{this.state.err.message}</div>
+          <div style={{fontSize:11,opacity:0.4,marginTop:12}}>Check browser console (F12) for full stack trace</div>
+        </div>
+      </div>
+    );
+    return this.props.children;
+  }
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <ErrorBoundary><App /></ErrorBoundary>
+);
+</script>
+</body>
+</html>
